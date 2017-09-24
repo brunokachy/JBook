@@ -9,8 +9,8 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import javax.ws.rs.QueryParam;
 
 @RestController
 public class JournalBookController {
@@ -31,9 +31,9 @@ public class JournalBookController {
     }
 
     @RequestMapping("/createUser")
-    User_ createUser(@QueryParam("firstName") String firstName, @QueryParam("middleName") String middleName,
-            @QueryParam("surname") String surname, @QueryParam("emailAddress") String emailAddress,
-            @QueryParam("phoneNumber") String phoneNumber, @QueryParam("password") String password) {
+    User_ createUser(@RequestParam("firstName") String firstName, @RequestParam("middleName") String middleName,
+            @RequestParam("surname") String surname, @RequestParam("emailAddress") String emailAddress,
+            @RequestParam("phoneNumber") String phoneNumber, @RequestParam("password") String password) {
         User_ u = new User_();
         u.setActive(true);
         u.setCreatedDate(new Date());
@@ -50,7 +50,7 @@ public class JournalBookController {
     }
 
     @RequestMapping("/login")
-    User_ login(@QueryParam("emailAddress") String emailAddress, @QueryParam("password") String password) {
+    User_ login(@RequestParam("emailAddress") String emailAddress, @RequestParam("password") String password) {
         User_ user = ur.findByEmailAddress(emailAddress);
         if (user != null) {
             Boolean checkPassword = util.checkHashedPassword(password, user.getPassword());
@@ -62,7 +62,7 @@ public class JournalBookController {
     }
 
     @RequestMapping("/newJournalEntry")
-    Entry newJournalEntry(@QueryParam("entryNote") String entryNote, @QueryParam("userToken") String userToken) {
+    Entry newJournalEntry(@RequestParam("entryNote") String entryNote, @RequestParam("userToken") String userToken) {
         User_ user = ur.findByToken(userToken);
         if (user != null) {
             Entry e = new Entry();
@@ -76,7 +76,7 @@ public class JournalBookController {
     }
 
     @RequestMapping("/getTodayJournalEntry")
-    List<Entry> getTodayJournalEntry(@QueryParam("userToken") String userToken) {
+    List<Entry> getTodayJournalEntry(@RequestParam("userToken") String userToken) {
         List<Entry> es = new ArrayList<>();
         User_ user = ur.findByToken(userToken);
         if (user != null) {
@@ -92,8 +92,8 @@ public class JournalBookController {
     }
 
     @RequestMapping("/getJournalEntry")
-    List<Entry> getTodayJournalEntry(@QueryParam("userToken") String userToken, @QueryParam("upperTime") Long upperTime,
-            @QueryParam("lowerTime") Long lowerTime) {
+    List<Entry> getTodayJournalEntry(@RequestParam("userToken") String userToken, @RequestParam("upperTime") Long upperTime,
+            @RequestParam("lowerTime") Long lowerTime) {
         List<Entry> es = new ArrayList<>();
         User_ user = ur.findByToken(userToken);
         if (user != null) {
